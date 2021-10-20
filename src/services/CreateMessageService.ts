@@ -1,3 +1,4 @@
+import { socket } from "../app";
 import prismaClient from "../prisma";
 
 class CreateMessageService {
@@ -10,6 +11,16 @@ class CreateMessageService {
       include: {
         user: true
       }
+    })
+
+    socket.emit('newMessage', {
+      text: message.text,
+      user_id: message.user_id,
+      created_at: message.created_at,
+      user: {
+        name: message.user.name,
+        avatar_url: message.user.avatar_url
+      },
     })
 
     return message
